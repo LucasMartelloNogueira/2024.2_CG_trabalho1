@@ -45,8 +45,24 @@ export default class Shader {
     return buffer;
   }
 
-  // TODO: escrever essa funcao
   static createVAO(gl, posAttribLoc, colorAttribLoc, dataBuffer = null) {
-    
+    var vao = gl.createVertexArray();
+    gl.bindVertexArray(vao);
+
+    if (posAttribLoc != null && posAttribLoc != undefined) {
+      gl.enableVertexAttribArray(posAttribLoc);
+      var size = 2;
+      var type = gl.FLOAT;
+      gl.bindBuffer(gl.ARRAY_BUFFER, dataBuffer.slice(0, 22));
+      gl.vertexAttribPointer(posAttribLoc, size, type, false, 0, 0);
+    }
+
+    if (colorAttribLoc != null && colorAttribLoc != undefined) {
+      gl.enableVertexAttribArray(colorAttribLoc);
+      size = 3;
+      type = gl.FLOAT;
+      gl.bindBuffer(gl.ARRAY_BUFFER, dataBuffer.slice(22));
+      gl.vertexAttribPointer(colorAttribLoc, size, type, false, 0, 0);
+    }
   }
 }
