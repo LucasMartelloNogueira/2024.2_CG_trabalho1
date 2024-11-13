@@ -107,6 +107,17 @@ class Scene {
     // Q2) Escreva matrizes de transformação que façam a coleção de triângulos dada em "this.data".
     // a) Estar centrada na posição (0,0).
     // b) Ter largura e altura igual a 1.8.
+
+      // Matriz identidade inicial
+    mat4.identity(this.mat);
+
+    // Aplicar escala uniforme de 1.8
+    mat4.scale(this.mat, this.mat, [1.8, 1.8, 1.0]);
+
+    // Para centralizar, podemos aplicar uma translação
+    // Considerando que os vértices estão definidos entre (0.1, 0.1) e (0.9, 0.9), o centro seria aproximadamente (0.5, 0.5).
+    // Movemos para (-0.5, -0.5) para centrar na origem
+    mat4.translate(this.mat, this.mat, [-0.5, -0.5, 0.0]);
   }
 
   draw(gl) {  
@@ -117,6 +128,9 @@ class Scene {
     gl.uniformMatrix4fv(this.matLoc, false, this.mat);
 
     // Q3) Implemente o comando dl.drawArrays adequado para o programa em questão
+  
+    // Desenha a coleção de triângulos na tela usando o modo gl.TRIANGLES
+    gl.drawArrays(gl.TRIANGLES, 0, 21); // Começando no índice 0 e desenhando 21 vértices
   }
 }
 
