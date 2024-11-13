@@ -7,6 +7,8 @@ import Shader from './shader.js';
 class Scene {
   constructor(gl) {
     this.data = [];
+    this.coords = []
+    this.colors = []
 
     this.delta = 0;
     this.mat = mat4.create();
@@ -86,6 +88,9 @@ class Scene {
       0.0, 1.0, 1.0,
       0.0, 1.0, 1.0,
     ];
+
+    this.coords = this.data.slice(0, 43)
+    this.colors = this.data.slice(43)
   }
 
   createVAO(gl) {
@@ -96,11 +101,13 @@ class Scene {
 
     // Criação do VBO (Shader.createBuffer)
     const dataBuffer = Shader.createBuffer(gl, gl.ARRAY_BUFFER, new Float32Array(this.data));
+    const coordBuffer = Shader.createBuffer(gl, gl.ARRAY_BUFFER, new Float32Array(this.coords));
+    const colorBuffer = Shader.createBuffer(gl, gl.ARRAY_BUFFER, new Float32Array(this.colors));
 
     // Criação do VAO
     // Q1) Escreva a implementação da função abaixo, que constroi um VAO contendo informações de posicão e
     // cores, e esteja de acordo com a estrutura do array "this.data"
-    this.vaoLoc = Shader.createVAO(gl, coordsAttributeLocation, colorsAttributeLocation, dataBuffer);
+    this.vaoLoc = Shader.createVAO(gl, coordsAttributeLocation, colorsAttributeLocation, coordBuffer, colorBuffer);
   }
 
   objectTransformation() {
@@ -108,7 +115,7 @@ class Scene {
     // a) Estar centrada na posição (0,0).
     // b) Ter largura e altura igual a 1.8.
 
-      // Matriz identidade inicial
+    // Matriz identidade inicial
     mat4.identity(this.mat);
 
     // Aplicar escala uniforme de 1.8
